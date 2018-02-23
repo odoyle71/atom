@@ -56,10 +56,10 @@ class WorkspaceElement extends HTMLElement {
   }
 
   updateGlobalTextEditorStyleSheet () {
-    const styleSheetSource = `atom-text-editor {
-  font-size: ${this.config.get('editor.fontSize')}px;
-  font-family: ${this.config.get('editor.fontFamily')};
-  line-height: ${this.config.get('editor.lineHeight')};
+    const styleSheetSource = `atom-workspace {
+  --editor-font-size: ${this.config.get('editor.fontSize')}px;
+  --editor-font-family: ${this.config.get('editor.fontFamily')};
+  --editor-line-height: ${this.config.get('editor.lineHeight')};
 }`
     this.styleManager.addStyleSheet(styleSheetSource, {sourcePath: 'global-text-editor-styles', priority: -1})
   }
@@ -104,6 +104,7 @@ class WorkspaceElement extends HTMLElement {
 
     this.addEventListener('mousewheel', this.handleMousewheel.bind(this), true)
     window.addEventListener('dragstart', this.handleDragStart)
+    window.addEventListener('mousemove', this.handleEdgesMouseMove)
 
     this.panelContainers = {
       top: this.model.panelContainers.top.getElement(),
@@ -130,6 +131,10 @@ class WorkspaceElement extends HTMLElement {
     this.paneContainer.addEventListener('mouseleave', this.handleCenterLeave)
 
     return this
+  }
+
+  destroy () {
+    this.subscriptions.dispose()
   }
 
   getModel () { return this.model }
@@ -169,7 +174,6 @@ class WorkspaceElement extends HTMLElement {
     // being hovered.
     this.cursorInCenter = false
     this.updateHoveredDock({x: event.pageX, y: event.pageY})
-    window.addEventListener('mousemove', this.handleEdgesMouseMove)
     window.addEventListener('dragend', this.handleDockDragEnd)
   }
 
@@ -199,7 +203,6 @@ class WorkspaceElement extends HTMLElement {
 
   checkCleanupDockHoverEvents () {
     if (this.cursorInCenter && !this.hoveredDock) {
-      window.removeEventListener('mousemove', this.handleEdgesMouseMove)
       window.removeEventListener('dragend', this.handleDockDragEnd)
     }
   }

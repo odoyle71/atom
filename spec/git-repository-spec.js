@@ -15,11 +15,6 @@ describe('GitRepository', () => {
 
   afterEach(() => {
     if (repo && !repo.isDestroyed()) repo.destroy()
-
-    // These tests sometimes lag at shutting down resources
-    try {
-      temp.cleanupSync()
-    } catch (error) {}
   })
 
   describe('@open(path)', () => {
@@ -366,6 +361,7 @@ describe('GitRepository', () => {
         notificationManager: atom.notifications,
         packageManager: atom.packages,
         confirm: atom.confirm,
+        grammarRegistry: atom.grammars,
         applicationDelegate: atom.applicationDelegate
       })
       await project2.deserialize(atom.project.serialize({isUnloading: false}))

@@ -32,6 +32,8 @@ module.exports = function (packagedAppPath) {
         relativePath.endsWith(path.join('node_modules', 'graceful-fs', 'graceful-fs.js')) ||
         relativePath.endsWith(path.join('node_modules', 'htmlparser2', 'lib', 'index.js')) ||
         relativePath.endsWith(path.join('node_modules', 'minimatch', 'minimatch.js')) ||
+        relativePath.endsWith(path.join('node_modules', 'request', 'index.js')) ||
+        relativePath.endsWith(path.join('node_modules', 'request', 'request.js')) ||
         relativePath === path.join('..', 'exports', 'atom.js') ||
         relativePath === path.join('..', 'src', 'electron-shims.js') ||
         relativePath === path.join('..', 'src', 'safe-clipboard.js') ||
@@ -46,10 +48,10 @@ module.exports = function (packagedAppPath) {
         relativePath === path.join('..', 'node_modules', 'less', 'index.js') ||
         relativePath === path.join('..', 'node_modules', 'less', 'lib', 'less', 'fs.js') ||
         relativePath === path.join('..', 'node_modules', 'less', 'lib', 'less-node', 'index.js') ||
+        relativePath === path.join('..', 'node_modules', 'lodash.isequal', 'index.js') ||
         relativePath === path.join('..', 'node_modules', 'node-fetch', 'lib', 'fetch-error.js') ||
         relativePath === path.join('..', 'node_modules', 'superstring', 'index.js') ||
         relativePath === path.join('..', 'node_modules', 'oniguruma', 'src', 'oniguruma.js') ||
-        relativePath === path.join('..', 'node_modules', 'request', 'index.js') ||
         relativePath === path.join('..', 'node_modules', 'resolve', 'index.js') ||
         relativePath === path.join('..', 'node_modules', 'resolve', 'lib', 'core.js') ||
         relativePath === path.join('..', 'node_modules', 'settings-view', 'node_modules', 'glob', 'glob.js') ||
@@ -57,7 +59,9 @@ module.exports = function (packagedAppPath) {
         relativePath === path.join('..', 'node_modules', 'spelling-manager', 'node_modules', 'natural', 'lib', 'natural', 'index.js') ||
         relativePath === path.join('..', 'node_modules', 'tar', 'tar.js') ||
         relativePath === path.join('..', 'node_modules', 'temp', 'lib', 'temp.js') ||
-        relativePath === path.join('..', 'node_modules', 'tmp', 'lib', 'tmp.js')
+        relativePath === path.join('..', 'node_modules', 'tmp', 'lib', 'tmp.js') ||
+        relativePath === path.join('..', 'node_modules', 'tree-sitter', 'index.js') ||
+        relativePath === path.join('..', 'node_modules', 'winreg', 'lib', 'registry.js')
       )
     }
   }).then((snapshotScript) => {
@@ -85,7 +89,7 @@ module.exports = function (packagedAppPath) {
     console.log(`Generating startup blob at "${generatedStartupBlobPath}"`)
     childProcess.execFileSync(
       path.join(CONFIG.repositoryRootPath, 'script', 'node_modules', 'electron-mksnapshot', 'bin', 'mksnapshot'),
-      [snapshotScriptPath, '--startup_blob', generatedStartupBlobPath]
+      ['--no-use_ic', snapshotScriptPath, '--startup_blob', generatedStartupBlobPath]
     )
 
     let startupBlobDestinationPath
